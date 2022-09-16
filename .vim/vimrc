@@ -1,0 +1,129 @@
+" ---------------------------------------------------------------------------
+"				    Vimrc
+" ---------------------------------------------------------------------------
+
+set nocompatible
+
+" https://stackoverflow.com/a/18734557
+" :p adds the trailing '/'
+const s:vim_home = fnameescape(
+			\ fnamemodify(
+			\ fnamemodify(
+			\ resolve(
+			\ expand('<sfile>:p')), ':h'), ':p'))
+
+if v:false
+	exec 'source' s:vim_home .. 'includes/vundle.vim'
+endif
+
+if !has('nvim')
+	exec 'source' s:vim_home .. '/includes/vimrc_example.vim'
+endif
+
+" Setting up undodir and backupdir,
+" so that vim wouldn't leave trash like .foo.un~ and foo~ everywhere
+
+const s:cache_dir = fnameescape(
+			\ fnamemodify(
+			\ resolve(
+			\ expand(
+			\ '~/.cache/' .. ( has('nvim') ? 'nvim' : 'vim' ))),
+			\ ':p'))
+
+exec 'set' 'undodir='   .. s:cache_dir .. 'undodir/'
+exec 'set' 'backupdir=' .. s:cache_dir .. 'backupdir/,.,~/tmp/,~/'
+
+unlet s:cache_dir
+
+set undofile
+set backup
+set writebackup
+
+syntax on
+
+set number
+set tabstop=8
+"set softtabstop=-1
+"set shiftwidth=8
+set shiftwidth=0
+"set expandtab
+set noexpandtab
+set autoindent
+set smartindent
+set cindent
+set textwidth=78
+set linebreak
+" Show whitespace characters like tab and space
+set listchars=tab:╾─,eol:¬,space:·,trail:#
+"set list
+" Case insensitive unless uppercase letters are used (smartcase)
+set ignorecase
+set smartcase
+
+" The following is from my old vimrc, which had some good stuf from the old
+" vimrc_example.vim, like showcmd
+set showcmd
+" Always show cursor position
+set ruler
+" Incremental searching
+set incsearch
+" Don't use Ex mode, use Q for formatting
+map Q gq
+" CTRL-U in insert mode deletes a lot. Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U> <C-G>u<C-U>
+
+" Set options for GVim
+if has('gui_running')
+	exec 'source' s:vim_home .. 'includes/gvim_options.vim'
+endif
+
+" Highlight the column after textwidth so it's easier to notice when you go
+" over it
+set colorcolumn=+1
+
+" I have no idea how I came up with the values for these, and I was an idiot
+" and left no comments, so I'll disable this for now until I understand what I
+" was trying to do.
+if v:false
+	exec 'source' s:vim_home .. 'includes/cinoptions.vim'
+endif
+
+if v:false
+	exec 'source' s:vim_home .. 'includes/old_colors.vim'
+endif
+
+" Options for the GNU C/C++ filetypes
+exec 'source' s:vim_home .. 'includes/gnu_c.vim'
+
+" Enable/disable the spell-checker
+set nospell
+
+" Disable arrow keys (only use hjkl) (who would want such a thing lol)
+if v:true
+	exec 'source' s:vim_home .. 'includes/no_arrows.vim'
+endif
+
+" Use relative numbers instead of absolute numbers.
+" This makes navigation with modifiers (e.g. 10j, 5k, etc.) way easier.
+set relativenumber
+
+colorscheme jellybeans
+
+
+" ---------------------------------------------------------------------------
+"                                  Plugins
+" ---------------------------------------------------------------------------
+
+" Prettier
+exec 'source' s:vim_home .. 'includes/plugins/prettier.vim'
+
+" Command-T
+exec 'source' s:vim_home .. 'includes/plugins/commandt.vim'
+
+" NERDCommenter
+exec 'source' s:vim_home .. 'includes/plugins/nerdcommenter.vim'
+
+" TODO: Maybe replace with Lightline?
+" Airline
+exec 'source' s:vim_home .. 'includes/plugins/airline.vim'
