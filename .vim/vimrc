@@ -110,6 +110,10 @@ set relativenumber
 
 colorscheme jellybeans
 
+" Print the current date with the <F5> shortcut key
+imap <silent> <F5> <C-r>=strftime('%c')<CR>
+nmap <silent> <F5> o<F5><ESC>
+
 
 " ---------------------------------------------------------------------------
 "                                  Plugins
