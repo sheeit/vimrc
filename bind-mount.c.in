@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <sys/mount.h>
+
+static const char source[] = @SOURCE_DIR@;
+static const char target[] = @TARGET_DIR@;
+
+int main(void)
+{
+	int ret = mount(
+		source,                           /* source         */
+		target,                           /* target         */
+		NULL,                             /* filesystemtype */
+		MS_BIND,                          /* mountflags     */
+		NULL                              /* data           */
+	);
+
+	if (ret == -1) {
+		perror("first mount");
+		exit(EXIT_FAILURE);
+	}
+
+	ret = mount(
+		source,                           /* source         */
+		target,                           /* target         */
+		NULL,                             /* filesystemtype */
+		MS_REMOUNT | MS_BIND | MS_RDONLY, /* mountflags     */
+		NULL                              /* data           */
+	);
+
+	if (ret == -1) {
+		perror("second mount");
+		exit(EXIT_FAILURE);
+	}
+
+	printf("Successfully bind-mounted %s to %s in read-only mode.\n",
+		source, target);
+
+	exit(EXIT_SUCCESS);
+}
