@@ -1,0 +1,2 @@
+- Add all the plugins (the files under .vim/pack/*/{opt,start}) to version
+control as git submodules.
